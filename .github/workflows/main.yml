@@ -46,7 +46,7 @@ jobs:
         run: ./skia/tools/install_dependencies.sh
         
       - name: Configure
-        run: ./skia/bin/gn gen ./skia/out/Shared --args='is_official_build=true is_component_build=true'
+        run: cd skia && bin/gn gen out/Shared --args='is_official_build=true is_component_build=true'
         
       - name: Build
         run: ninja -C ./skia/out/Static
