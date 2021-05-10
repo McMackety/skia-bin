@@ -49,7 +49,7 @@ jobs:
         run: cd skia && bin/gn gen out/Static --args='is_official_build=true'
         
       - name: Build
-        run: cd skia && ninja -C out/Static
+        run: ninja -C skia/out/Static
         
       - name: List Dir
         run: cd skia && ls out/Static
