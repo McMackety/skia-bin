@@ -1,0 +1,52 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build Skia
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2.2.2
+        with:
+          python-version: 2.7
+          
+      - name: Setup Ninja
+        uses: ashutoshvarma/setup-ninja@v1.1
+
+      - name: Download Skia
+        run: git clone https://skia.googlesource.com/skia
+        
+      - name: Git Sync Deps
+        run: python2 skia/tools/git-sync-deps
+        
+      #- name: Install Deps
+        #run: ./skia/tools/install_dependencies.sh
+        
+      - name: Configure
+        run: cd skia && bin/gn gen out/Static --args='is_debug=false is_official_build=true skia_use_system_expat=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false skia_use_system_icu=false skia_use_system_harfbuzz=false'
+        
+      - name: Build
+        run: ninja -C skia/out/Static
+        
+      - name: List Dir
+        run: cd skia && ls out/Static
