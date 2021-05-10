@@ -49,8 +49,8 @@ jobs:
         run: cd skia && bin/gn gen out/Shared --args='is_official_build=true is_component_build=true'
         
       - name: Build
-        run: ninja -C ./skia/out/Static
+        run: ninja -C .out/Static
         
       - name: List Dir
-        run: ls ./skia/out/Static
+        run: ls out/Static
         
