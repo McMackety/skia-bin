@@ -46,11 +46,11 @@ jobs:
         run: ./skia/tools/install_dependencies.sh
         
       - name: Configure
-        run: cd skia && bin/gn gen out/Shared --args='is_official_build=true is_component_build=true'
+        run: cd skia && bin/gn gen out/Static --args='is_official_build=true'
         
       - name: Build
-        run: ninja -C out/Static
+        run: cd skia && ninja -C out/Static
         
       - name: List Dir
-        run: ls out/Static
+        run: cd skia && ls out/Static
         
